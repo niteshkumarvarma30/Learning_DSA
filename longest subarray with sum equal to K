@@ -1,0 +1,49 @@
+!st Approach : only for positive and zero : 
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& arr, int k) {
+    int left=0, right=0, maxLen=0;
+    long long sum=arr[0];
+    int n=arr.size();
+    while(right<n){
+        while( sum>k && left<=right ){
+            sum-=arr[left];
+            left++;
+        }
+        if(sum==k){
+            maxLen=max(maxLen, right-left+1);
+        }
+        right++;
+        if(right<n){
+            sum+=arr[right];
+        }
+    }
+    return maxLen;
+    }
+};
+
+2nd Approach : Positive and Negative : 
+class Solution {
+public:
+    int longestSubarray(vector<int>& arr, int k) {
+    int maxLen=0;
+    int sum=0;
+    map<int,int> mpp;
+    for(int i=0;i<arr.size();i++){
+         sum+=arr[i];
+        if(sum==k){
+            maxLen=max(maxLen, i+1);
+        }
+        if(mpp.find(sum)==mpp.end()){
+            mpp[sum]=i;
+        }
+        if(mpp.find(sum-k)!=mpp.end()){
+            maxLen=max(maxLen, i-mpp[sum-k]);
+        }
+        
+    }
+    return maxLen;
+    }
+};
+
